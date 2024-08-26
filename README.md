@@ -35,11 +35,11 @@ Se você não estiver usando o github para gerenciar seu repositório remoto, cr
 ## Clone
 `clone` cria uma cópia local de um repositório remoto. Vamos clonar seu repositório "forked" da etapa anterior. Usaremos `ssh` ao clonar para que possamos interagir com o remoto sem ter que se preocupar com credenciais.
 ```bash
-git clone git@github.com:username/git-practice.git # use seu nome de usuário aqui
+git clone git@github.com:username/MissingSemester-git.git # use seu nome de usuário aqui
 ```
 Se você estiver clonando um repositório que não é de sua propriedade, precisará clonar usando https em vez de ssh. Você também não poderá enviar alterações para um repositório que não é de sua propriedade.
 
-## Adicionar e Confirmar
+## Add e Commit
 Agora que temos uma cópia local do repositório, vamos fazer uma alteração nele.
 ```bash
 echo "It is a period of civil war" > arquivo.txt
@@ -66,7 +66,7 @@ git commit -m "Started my food blog"
 ```
 Confirmações separadas são úteis ao confirmar alterações que são logicamente ou funcionalmente não relacionadas.
 
-## `HEAD` e a árvore git
+## `HEAD` e a git tree
 No git, o `HEAD` é o ponteiro para a referência do branch atual. Mover a cabeça é como avançamos para confirmações mais recentes/antigas ou mudamos de branch. Você pode pensar na cabeça como um marcador "você está aqui". Vamos dar uma olhada em onde estamos
 ```bash
 git log
@@ -83,7 +83,7 @@ git config --global alias.lola 'log --graph --decorate --pretty=oneline --abbrev
 git lola
 ```
 
-## Ramos
+## Branches
 Como você viu em `git lola`, nossa árvore git tem vários branches. Vamos listá-los todos:
 ```bash
 git branch -l # mostrar todos os branches locais (deve ser apenas o master)
@@ -135,14 +135,14 @@ Agora redefiniremos para o pai do commit atual usando o atalho `HEAD~`. Você ta
 git reset --soft HEAD~
 git lola
 ```
-Você pode ver que o branch master voltou para o commit anterior e `HEAD` se moveu junto com ele. Nenhum dos arquivos foi alterado, no entanto, e se executarmos `git status`, veremos que mess.txt está confirmado pronto para ser confirmado. `git reset --soft HEAD~` basicamente desfez nosso último commit.
+Você pode ver que o branch master voltou para o commit anterior e `HEAD` se moveu junto com ele. Nenhum dos arquivos foi alterado, no entanto, e se executarmos `git status`, veremos que mess.txt está "comitadas" pronto para ser "comitado". `git reset --soft HEAD~` basicamente desfez nosso último commit.
 
-Em seguida, o comportamento padrão para redefinir: `--mixed`. Isso desfará os commits (como `--soft`) e também desfará as alterações confirmadas, mas não alterará os arquivos. Execute `git lola` e `git status` após cada comando abaixo para ver as alterações que você está fazendo.
+Em seguida, o comportamento padrão para redefinir: `--mixed`. Isso desfará os commits (como `--soft`) e também desfará as alterações "comitadas", mas não alterará os arquivos. Execute `git lola` e `git status` após cada comando abaixo para ver as alterações que você está fazendo.
 ```bash
 git commit -m "make a mess again"
 git reset HEAD~
 ```
-Depois de executar o padrão (`--mixed`) `reset`, você pode ver que `mess.txt` está presente, mas não confirmado. Desfizemos o commit e desfizemos a confirmação do arquivo.
+Depois de executar o padrão (`--mixed`) `reset`, você pode ver que `mess.txt` está presente, mas não "comitado". Desfizemos o commit e desfizemos a confirmação do arquivo.
 
 Finalmente, a opção mais perigosa: `reset --hard`. Este comando desfará os commits, desfará as alterações confirmadas e removerá essas alterações de todos os arquivos. Suas alterações serão obliteradas para sempre\* então use com cuidado!
 \*veja Reflog
@@ -160,7 +160,7 @@ Em resumo:
 
 No código acima, usamos `reset` para mover para commits no mesmo branch, mas não há nada que o impeça de redefinir para commits em branches diferentes.
 
-#### Esmagar commits
+#### Juntar commits
 O reset é útil como um botão de desfazer, mas vamos tentar um exemplo mais interessante. Imagine que somos um desenvolvedor ocupado e fizemos um monte de mensagens de commit em nossa máquina local.
 ```bash
 git checkout -b butternut
@@ -233,21 +233,6 @@ git checkout master arquivo.txt
 
 Reset e checkout são ferramentas poderosas e, com grande poder, vem grande complexidade. Recomendo [ler mais](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) sobre esses dois comandos.
 
-## Reflog
-Quando disse que `reset --hard` removeria um commit para sempre, não estava contando a verdade completa. `git reflog` está disponível como uma última opção. Este comando mostra um reflog (histórico) de cada vez que a ponta de um branch foi atualizada. Se você tiver uma boa memória e boas mensagens de commit, poderá usar o reflog para recuperar commits que não estão mais na árvore git.
-
-```bash
-git reflog # mostrar reflog para HEAD
-git reflog show --all # mostrar reflog para todos os branches
-
-git checkout blizzard
-git reset --hard HEAD~ # oops, acabei de perder um commit que eu queria
-git reflog show blizzard # mostrar reflog para o branch blizzard
-git reset <commit-hash> # coloque o hash do commit aqui, sem <>
-git status # verifique se as alterações são conforme o esperado
-git reset --hard <commit-hash> # coloque o hash do commit aqui
-```
-
 ## Stash e pop
 Às vezes, você deseja armazenar temporariamente algum trabalho, mas não confirmá-lo (por exemplo, se quiser verificar rapidamente outro branch ou se perceber que começou a trabalhar no branch errado. `git stash` permitirá que você faça isso. `git stash pop` recuperará as alterações estocadas mais recentemente (as alterações estocadas são armazenadas usando uma pilha).
 ```bash
@@ -276,7 +261,7 @@ git lola
 ### Conflitos de merge
 
 #### Resolução manual
-Às vezes, uma mesclagem exigirá intervenção manual:
+Às vezes, uma operação de merging exigirá intervenção manual:
 
 ```bash
 git checkout merge-target
@@ -284,7 +269,7 @@ git merge complex-feature
 git status
 ```
 
-Ops, a mesclagem encontrou alguns conflitos e o Git não tem certeza de como resolvê-los. O comando `git status` nos informa que esses conflitos estão no arquivo `crawl.txt`. Abra esse arquivo em seu editor de texto favorito e você verá marcadores de conflito no texto, semelhantes a isto:
+Ops, a operação de merging encontrou alguns conflitos e o Git não tem certeza de como resolvê-los. O comando `git status` nos informa que esses conflitos estão no arquivo `crawl.txt`. Abra esse arquivo em seu editor de texto favorito e você verá marcadores de conflito no texto, semelhantes a isto:
 
 ```
 <<<<<<< HEAD
@@ -301,18 +286,18 @@ git add crawl.txt
 git merge --continue
 ```
 
-Você também pode usar uma ferramenta de mesclagem (como kdiff, meld ou beyond compare) para resolver mesclagens. Embora eu prefira usar a linha de comando para a maior parte do meu trabalho com o Git, uma ferramenta de mesclagem gráfica é indispensável quando se enfrenta mesclagens complexas.
+Você também pode usar uma ferramenta de merge (como kdiff, meld ou beyond compare) para resolver mesclagens. Embora eu prefira usar a linha de comando para a maior parte do meu trabalho com o Git, uma ferramenta de mesclagem gráfica é indispensável quando se enfrenta mesclagens complexas.
 
 #### "Ours" vs "Theirs"
 
-Às vezes, quando você tem conflitos de mesclagem, você só quer aceitar todas as alterações de um branch específico para cada conflito.
+Às vezes, quando você tem conflitos de merge, você só quer aceitar todas as alterações de um branch específico para cada conflito.
 
 ```bash
 git checkout merge-target
 git merge complex-feature-2
 ```
 
-Ao mesclar, "ours" significa o branch no qual você está mesclando, enquanto "theirs" significa o branch do qual você está mesclando. Neste caso, estamos mesclando no branch `merge-target` e mesclando a partir do branch `complex-feature-2`. Decidimos que queremos apenas as alterações do branch `complex-feature-2`, ou "theirs", então podemos evitar fazer uma mesclagem manual completa (hurra).
+Ao realizar o merge, "ours" significa o branch no qual você está mesclando, enquanto "theirs" significa o branch do qual você está mesclando. Neste caso, estamos mesclando no branch `merge-target` e mesclando a partir do branch `complex-feature-2`. Decidimos que queremos apenas as alterações do branch `complex-feature-2`, ou "theirs", então podemos evitar fazer uma mesclagem manual completa (hurra).
 
 ```bash
 git checkout --theirs funky.txt # aceite todas as alterações do branch de recurso
