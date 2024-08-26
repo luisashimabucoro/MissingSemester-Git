@@ -247,7 +247,7 @@ git commit -m "added something temporary"
 ```
 Nunca use stash para armazenamento de longo prazo, porque garanto que você esquecerá o que armazenou e em qual branch ele deveria estar. Se você deseja armazenar algo por mais de um dia e não deseja que ele esteja em nenhum de seus branches, basta colocá-lo em um novo branch no local relevante.
 
-## Mesclando
+## Merging
 Quando você deseja incorporar código de um branch em outro branch, é hora de fazer um `merge`.
 
 ### Merge resolvido automaticamente
