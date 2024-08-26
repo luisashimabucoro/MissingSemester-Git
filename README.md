@@ -1,4 +1,4 @@
-# Bem-vindo ao git practice do The Missing Semester!
+# Bem-vindo à prática de Git do The Missing Semester!
 Este repositório é um lugar seguro para praticar os conceitos básicos do git. Tente fazer um rebase sem arriscar nenhum código importante! Aprenda como sincronizar a partir de um repositório upstream! Pratique a resolução de conflitos de merge!
 Este guia pressupõe que você tenha um conhecimento confortável de comandos do shell unix. Se você quiser uma atualização, [tente aqui](https://github.com/you-dont-need/You-Dont-Need-GUI). Este guia também pressupõe que você tenha uma conta existente do github e tenha [adicionado sua chave ssh a ela](https://help.github.com/articles/adding-a-new-ssh-key-to-your-github-account/).
 
