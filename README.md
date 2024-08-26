@@ -14,8 +14,8 @@ Existem muitas alternativas ao GitHub, como Stash, GitLab ou auto-hospedagem de 
 ## Init
 Para criar um novo repositório, crie um diretório e use `git init` dentro dele.
 ```bash
-mkdir myDummyRepo
-cd myDummyRepo
+mkdir repoTeste
+cd repoTeste
 git init
 ```
 É isso, bem simples. Você deve ver um diretório `.git` lá agora.
@@ -24,16 +24,16 @@ ls -a # os diretórios que começam com . são normalmente ocultos, então use -
 ```
 Não usaremos este novo repositório, então você pode excluí-lo.
 ```bash
-rm -rf myDummyRepo
+rm -rf repoTeste
 ```
 
 ## Fork
-Faça um fork deste repositório na sua conta do github clicando no botão Fork no github (no canto superior direito da página do github para este repositório). Isso criará um fork (cópia) deste repositório na sua conta do github, criando um novo repositório remoto que você controla. Bifurcação é útil quando você deseja usar um repositório existente como base para seu próprio projeto. Um repositório bifurcado também pode ser usado para propor alterações ao repositório original.
+Faça um fork deste repositório na sua conta do github clicando no botão Fork no github (no canto superior direito da página do github para este repositório). Isso criará um "fork" (cópia) deste repositório na sua conta do github, criando um novo repositório remoto que você controla. "Forking" é útil quando você deseja usar um repositório existente como base para seu próprio projeto. Um repositório "forked" também pode ser usado para propor alterações ao repositório original.
 
 Se você não estiver usando o github para gerenciar seu repositório remoto, crie sua própria cópia remota deste repositório no serviço de hospedagem remoto que estiver usando.
 
 ## Clone
-`clone` cria uma cópia local de um repositório remoto. Vamos clonar seu repositório bifurcado da etapa anterior. Usaremos ssh ao clonar para que possamos interagir com o remoto sem ter que se preocupar com credenciais.
+`clone` cria uma cópia local de um repositório remoto. Vamos clonar seu repositório "forked" da etapa anterior. Usaremos `ssh` ao clonar para que possamos interagir com o remoto sem ter que se preocupar com credenciais.
 ```bash
 git clone git@github.com:username/git-practice.git # use seu nome de usuário aqui
 ```
@@ -42,27 +42,27 @@ Se você estiver clonando um repositório que não é de sua propriedade, precis
 ## Adicionar e Confirmar
 Agora que temos uma cópia local do repositório, vamos fazer uma alteração nele.
 ```bash
-echo "It is a period of civil war" > crawl.txt
+echo "It is a period of civil war" > arquivo.txt
 git status
 ```
 O comando `git status` mostra que temos uma alteração não confirmada. Para registrar uma alteração no git, primeiro devemos confirmar essa alteração no índice e, em seguida, confirmar todas as alterações confirmadas.
 ```bash
-git add crawl.txt # adicione a alteração
+git add arquivo.txt # adicionando a alteração
 git status # mostra que nossa alteração está confirmada e pronta para ser confirmada
-git commit -m "Started telling a story of long ago & far, far away" # confirme as alterações confirmadas com uma mensagem
+git commit -m "Started telling a story of long ago & far, far away" # confirmar as alterações confirmadas com uma mensagem
 ```
 A etapa de confirmação parece desnecessária neste caso, mas é útil em projetos complexos em que você está alterando vários arquivos. Vamos tentar um exemplo
 ```bash
-echo "Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic Empire." >> crawl.txt # modifique nosso primeiro arquivo
-echo "I love potatoes" > newFile.txt # crie um novo arquivo
+echo "Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic Empire." >> arquivo.txt # modificando nosso primeiro arquivo
+echo "I love potatoes" > novoArquivo.txt # criando um novo arquivo
 git status
 ```
 Agora temos duas alterações e queremos confirmá-las separadamente, o que podemos fazer usando o comando de confirmação. Tente executar `git status` após cada comando abaixo para ver as alterações que você está fazendo.
 ```bash
-git add crawl.txt
+git add arquivo.txt
 git commit -m "Started the crawl"
-git add newFile.txt
-git commit -m "started my food blog"
+git add novoArquivo.txt
+git commit -m "Started my food blog"
 ```
 Confirmações separadas são úteis ao confirmar alterações que são logicamente ou funcionalmente não relacionadas.
 
@@ -95,24 +95,24 @@ Cada branch é um ponteiro para um instantâneo do seu projeto. Se você estiver
 ### Novo branch
 Vamos criar um novo branch
 ```bash
-git branch myFirstBranch # criar um novo branch
+git branch meuPrimeiroBranch # criar um novo branch
 git lola
 ```
 O que aconteceu? Não muito. Criamos um novo branch (instantâneo do nosso código), mas é isso. `HEAD` ainda aponta para o branch `master`, então qualquer alteração no código que fizermos será feita no `master`, não no nosso novo branch. Para mover `HEAD` para um branch diferente, use o comando `checkout`.
 ```bash
-git checkout myFirstBranch
+git checkout meuPrimeiroBranch
 git lola
 ```
 Agora podemos ver `HEAD` apontando para nosso novo branch. Muitas vezes, você desejará ir para um branch imediatamente após criá-lo. Você pode fazer isso em um único comando:
 ```bash
-git checkout -b "foodBlog" #crie um novo branch e alterne para ele imediatamente
+git checkout -b "blogCulinario" #crie um novo branch e alterne para ele imediatamente
 git status
 ```
 
 Se confirmarmos alterações no nosso novo branch, veremos que ele se tornará diferente do nosso branch master:
 ```bash
-echo "You have failed me for the last time" >> crawl.txt
-git add crawl.txt
+echo "You have failed me for the last time" >> arquivo.txt
+git add arquivo.txt
 git commit -m "Added Vader quote"
 git lola
 git diff master # compare com o branch master
@@ -217,7 +217,7 @@ git lola
 
 `checkout` também tentará mesclar quaisquer alterações não confirmadas e pararemos se elas forem substituídas ao fazer check-out do novo local.
 ```bash
-echo "stop" > crawl.txt
+echo "stop" > arquivo.txt
 git status
 git checkout HEAD~5
 ```
@@ -228,7 +228,7 @@ Você também pode usar `checkout` em um caminho de arquivo. Isso não moverá `
 
 Vamos usar o checkout para remover nossas alterações indesejadas para rastrear
 ```bash
-git checkout master crawl.txt
+git checkout master arquivo.txt
 ```
 
 Reset e checkout são ferramentas poderosas e, com grande poder, vem grande complexidade. Recomendo [ler mais](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) sobre esses dois comandos.
@@ -274,17 +274,48 @@ git lola
 ```
 
 ### Conflitos de merge
+
 #### Resolução manual
-Às vezes, uma mesclagem exigirá intervenção manual
+Às vezes, uma mesclagem exigirá intervenção manual:
+
 ```bash
 git checkout merge-target
 git merge complex-feature
 git status
 ```
-Bup bow. A mesclagem encontrou alguns conflitos e o git não tem certeza de como resolvê-los. `git status` nos diz que esses conflitos estão em `crawl.txt`, então abra esse arquivo no seu editor favorito. Você verá marcadores de conflito no seu texto assim:
+
+Ops, a mesclagem encontrou alguns conflitos e o Git não tem certeza de como resolvê-los. O comando `git status` nos informa que esses conflitos estão no arquivo `crawl.txt`. Abra esse arquivo em seu editor de texto favorito e você verá marcadores de conflito no texto, semelhantes a isto:
 
 ```
 <<<<<<< HEAD
 It is a planet of civil war.
 =======
-It
+It is a period of PARTIES and maybe war.
+>>>>>>> complex-feature
+```
+
+O texto entre `<<<<<<< HEAD` e `=======` é do branch `merge-target` (seu branch atual), enquanto o texto entre `=======` e `>>>>>>> complex-feature` é do branch `complex-feature`. Para resolver o conflito, edite o texto conforme desejar e, em seguida, exclua os marcadores de conflito. Quando terminar, salve seu trabalho e volte para o terminal.
+
+```bash
+git add crawl.txt
+git merge --continue
+```
+
+Você também pode usar uma ferramenta de mesclagem (como kdiff, meld ou beyond compare) para resolver mesclagens. Embora eu prefira usar a linha de comando para a maior parte do meu trabalho com o Git, uma ferramenta de mesclagem gráfica é indispensável quando se enfrenta mesclagens complexas.
+
+#### "Ours" vs "Theirs"
+
+Às vezes, quando você tem conflitos de mesclagem, você só quer aceitar todas as alterações de um branch específico para cada conflito.
+
+```bash
+git checkout merge-target
+git merge complex-feature-2
+```
+
+Ao mesclar, "ours" significa o branch no qual você está mesclando, enquanto "theirs" significa o branch do qual você está mesclando. Neste caso, estamos mesclando no branch `merge-target` e mesclando a partir do branch `complex-feature-2`. Decidimos que queremos apenas as alterações do branch `complex-feature-2`, ou "theirs", então podemos evitar fazer uma mesclagem manual completa (hurra).
+
+```bash
+git checkout --theirs funky.txt # aceite todas as alterações do branch de recurso
+git add funky.txt
+git merge --continue
+```
